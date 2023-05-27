@@ -42,3 +42,7 @@ This is an example pet name generator app used in the OpenAI API [quickstart tut
    ```
 
 You should now be able to access the app at [http://localhost:5000](http://localhost:5000)! For the full context behind this example app, check out the [tutorial](https://beta.openai.com/docs/quickstart).
+
+## Troubleshooting
+
+If `flask run` results in `command not found`, re-read the warnings during installation of the requirements and ensure the folder containing `flask.exe` is in your PATH.
