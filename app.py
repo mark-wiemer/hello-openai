@@ -10,12 +10,13 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 @app.route("/", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
-        animal = request.form["animal"]
+        title = request.form["title"]
+        description = request.form["description"]
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": f"{generate_prompt(animal)}"},
+                {"role": "user", "content": f"{generate_prompt(title, description)}"},
             ],
             temperature=0.6,
         )
@@ -25,14 +26,31 @@ def index():
     return render_template("index.html", result=result)
 
 
-def generate_prompt(animal):
-    return """Suggest three names for an animal that is a superhero.
+def generate_prompt(title, description):
+    return """Repeat the course title and suggest three skill tags for an online course. Limit your response to the list of possible tags.
 
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: {}
-Names:""".format(
-        animal.capitalize()
-    )
+Here are the possible tags (one on each line):
+C (Programming Language)
+C#
+Communication
+Programming
+C++
+Java
+Kotlin
+JavaScript
+TypeScript
+Leadership
+Management
+Culture
+
+Title: Guiding a Team
+Description: Learn how to help a team become stronger, more resilient, and more productive
+Tags: Tags for "Guiding a Team": Culture, Management, Leadership
+
+Title: Learning to Code
+Description: Being your programming journey and explore some of the most common programming languages used today.
+Tags: Tags for "Learning to Code": JavaScript, Programming, C#
+
+Title: {}
+Description: {}
+Tags:""".format(title.capitalize(), description.capitalize())
